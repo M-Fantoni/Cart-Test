@@ -1,0 +1,15 @@
+.auto-margin{
+    margin: auto;
+}
+
+#header{
+    display: grid;
+    grid-template-columns: 100px auto 100px 100px;
+    grid-template-rows: 50px;
+    background-color: #3c3575;
+    color: whitesmoke;
+}
+
+#centralColumnHeader{
+    grid-column-start: 3;
+}

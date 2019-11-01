@@ -1,0 +1,6 @@
+
+<div *ngIf="cart.length < 1">Your cart is empty</div>
+<div *ngFor="let item of cart">
+    {{item.nb}}
+    {{item.product.title}}
+</div>

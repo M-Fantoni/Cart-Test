@@ -1,0 +1,13 @@
+<div id="productsContainer" >
+    <div class="tuile" *ngFor="let item of products" >
+        <div class="productImg" [style.background-image]="'url('+item.url+')'" ></div>
+        <div >
+           Product {{item.id}}
+        </div>
+        <div>
+            {{item.title}}
+            
+        </div>
+        <div id="{{item.id}}" (click)="AddToCart(item)"> Add To Cart </div>
+    </div>
+</div>
