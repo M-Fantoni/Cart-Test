@@ -58,7 +58,7 @@ export class CartService {
     }
 
     this.cart = this.cart.filter(function(item) {
-      return item !== product
+      return item.product.id != product.product.id
     });
 
     localStorage.setItem("cart", JSON.stringify(this.cart));

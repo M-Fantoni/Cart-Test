@@ -16,7 +16,7 @@ export class CartComponent implements OnInit {
     this.getCart();
   }
 
-  //on récupère le panier depuis son service
+  //récupère le panier depuis son service
   getCart(){
     this.cartService.getCart().subscribe(x => { 
       this.cart = new Array();
@@ -24,7 +24,9 @@ export class CartComponent implements OnInit {
     })
   }
 
+  //supprime une ligne de produit dans le panier
   removeProductLine(item: CartItem){
     this.cartService.removeProductLineFromCart(item);
+    this.getCart();
   }
 }

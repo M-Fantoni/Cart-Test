@@ -20,3 +20,27 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+
+.productName{
+    text-align: center;
+    padding-top:23px;
+    font-weight: bold;
+    color:#3c3575;
+    font-size: 25px;
+}
+
+.productTitle{
+    text-align: center;
+    padding:23px 0 23px 0;
+    color:#3c3575;
+}
+
+.addProductBtn{
+    text-align: center;
+    width: 150px;
+    background-color: #3c3575;
+    margin: auto;
+    height: 40px;
+    padding-top: 20px;
+    color:whitesmoke;
+}
