@@ -11,40 +11,57 @@ export class CartService {
 
   private cartSubject: BehaviorSubject<CartItem[]> = new BehaviorSubject([]);
   private cartCount: BehaviorSubject<number> = new BehaviorSubject(0);
+  private cart: CartItem[];
 
   constructor() { }
 
   getCart(): Observable<CartItem[]>{
+    this.GetLocalStorage();
+
+    this.cartSubject.next(this.cart);
+
     return this.cartSubject.asObservable();
   }
   
   //ajout d'un produit dans le panier
   addProductToCart(product: Product){
-
-    let cart: CartItem[] = this.cartSubject.value;
+    this.GetLocalStorage();
 
     if(this.cartSubject.value.length >= 1 ){
-      let index = this.findProductInCart(product, cart);
+      let index = this.findProductInCart(product, this.cart);
       if(index == undefined || index == -1)
       {
-        cart.push({nb: 1, product: product})
+        this.cart.push({nb: 1, product: product})
       }
       else{
-        cart[index].nb += 1
+        this.cart[index].nb += 1
       }
     }
     else{
-      cart.push({nb: 1, product: product})
+      this.cart.push({nb: 1, product: product})
     }
 
-    this.cartSubject.next(cart)
+    localStorage.setItem("cart", JSON.stringify(this.cart));
+    this.cartSubject.next(this.cart)
+    
+
     //on compte le nombre de produit a chaque ajout
     this.countCart();
   }
 
   //suppression d'un produit dans le panier
   removeProductLineFromCart(product: CartItem){
-    // this.cartSubject.next()
+    this.GetLocalStorage();
+
+    if(this.cart == null){
+      this.cart = [];
+    }
+
+    this.cart = this.cart.filter(function(item) {
+      return item !== product
+    });
+
+    localStorage.setItem("cart", JSON.stringify(this.cart));
 
     //on compte le nombre de produit a chaque suppression
     this.countCart();
@@ -52,11 +69,12 @@ export class CartService {
 
   //compte le nombre de produit dans le panier
   countCart(){
-    let cart: CartItem[] = this.cartSubject.value;
+    this.GetLocalStorage();
+
     let count:number = 0
 
-    for(let i = 0; i < cart.length; i++){
-      count += cart[i].nb;
+    for(let i = 0; i < this.cart.length; i++){
+      count += this.cart[i].nb;
     }
 
     this.cartCount.next(count);
@@ -64,11 +82,21 @@ export class CartService {
 
   //retourne la quantité de produit dans le panier
   getCartQuantity(): Observable<number>{
+    this.countCart();
+
     return this.cartCount.asObservable();
   }
 
   private findProductInCart(product: Product, cart: CartItem[]){
     return cart.findIndex((obj => obj.product.id ==  product.id));
+  }
+
+  private GetLocalStorage(){
+    this.cart = JSON.parse(localStorage.getItem("cart"));
+
+    if(this.cart == null){
+      this.cart = [];
+    }
   }
   
 }
